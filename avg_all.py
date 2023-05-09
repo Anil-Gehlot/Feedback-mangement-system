@@ -3,15 +3,30 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re           # regex
 
-
-
+# Load the Excel sheet into a Pandas DataFrame
+df = pd.read_excel('feedbackdata.xlsx')
 
 teacher = int(input('enter total no. of teacher : '))
-list1=[]
-for i in range(teacher):
 
-    # Load the Excel sheet into a Pandas DataFrame
-    df = pd.read_excel('feedbackdata.xlsx')
+#---------------------------------------------------------
+# Extracting the teachers name : 
+mylist= list(df.columns)
+list2 = []
+
+for string in mylist:
+    end = string.find('[')
+    fin = string.find('(')
+    csk = string[end+1:fin]
+    list2.append(csk)
+
+
+final =list2[3:teacher+3]         # all teacher name.
+# print(final)
+#---------------------------------------------------------
+
+
+avg_all=[]
+for i in range(teacher):
 
     # Extract the column you want as a Python list
     # the iloc attribute is used to select all rows (:) and the first column (0) of the DataFrame, used to convert the selected column data to a Python list.
@@ -51,22 +66,19 @@ for i in range(teacher):
     # print(average4) 
 
     average_rating = (average1+average2+average3+average4)/4
-    list1.append(average_rating)
+    avg_all.append(average_rating)
 
-# print(list1)
-# print(len(list1))
+# print(avg_all)                # average of all teachers.
+# print(len(avg_all))
+#---------------------------------------------------------
 
-# Create a bar graph of the data
-plt.bar(range(len(list1)), list1)
+# create the bar chart
+fig, ax = plt.subplots()
+ax.bar(final, avg_all)
 
-# Set the x-axis tick labels
-plt.xticks(range(len(list1)), [str(i+1) for i in range(len(list1))])
+# set the tick labels for the x-axis
+plt.xticks(rotation='vertical')
 
-# Set the x-axis label
-plt.xlabel('Resource Person Name')
-
-# Set the y-axis label
-plt.ylabel('Ratings')
-
-# Show the plot
+# show the plot
 plt.show()
+#---------------------------------------------------------
